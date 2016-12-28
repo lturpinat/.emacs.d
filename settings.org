@@ -2,13 +2,11 @@
 #+AUTHOR: Louis Turpinat
 
 * Basic settings
-** Who am I
+** Starting
 #+BEGIN_SRC emacs-lisp
-(setq user-full-name "Louis Turpinat")
-#+END_SRC
-** Common-Lisp
-#+BEGIN_SRC emacs-lisp
-(require 'cl)
+(require 'cl) ;; common-lisp dep. for packages & emacs advanced features
+(defvar my-start-time (current-time)
+  "Time when Emacs was started")
 #+END_SRC
 ** Package manager
 #+BEGIN_SRC emacs-lisp
@@ -33,8 +31,10 @@
   bm
   
   company
+  company-c-headers
   company-irony
-  company-irony-c-headers
+  company-quickhelp
+  company-statistics
 
   calfw
   csharp-mode
@@ -47,6 +47,7 @@
   flycheck-irony
 
   fix-word
+  golden-ratio
 
   helm
   helm-swoop 
@@ -61,6 +62,9 @@
   hlinum
   iedit
 
+  latex-extra
+  latex-math-preview
+  latex-unicode-math-mode  
   minimap
   markdown-mode
   magit
@@ -70,6 +74,7 @@
   pdf-tools
   python-mode
   popwin
+  pos-tip
   rainbow-delimiters
   smex
   smartparens
@@ -79,6 +84,7 @@
   web-mode
   wttrin
   window-numbering
+  which-key
   yaml-mode
   yasnippet  
   
@@ -92,11 +98,18 @@
 (dolist (p packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+(package-refresh-contents)
+#+END_SRC
+** Who am I
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name "Louis Turpinat")
 #+END_SRC
 ** Global settings
 #+BEGIN_SRC emacs-lisp
-;; emacs asks "y or n" instead of "yes or no"
-(defalias 'yes-or-no-p 'y-or-n-p)
+(setq inhibit-startup-screen t) ;; disable emacs startup screen
+
+(defalias 'yes-or-no-p 'y-or-n-p) ;; emacs asks "y or n" instead of "yes or no"
 
 ;; removing some ugly GUI components
 (tool-bar-mode -1)
@@ -153,10 +166,25 @@
   )
 
 (define-key read-expression-map [(tab)] 'hippie-expand) ;; "enable tab completion in the `eval-expression` minibuffer, I just bind the tab key to `hippie-expand` in the `read-expression-map`"
+
+(setq tab-width 2) ;; set default indentation to two spaces
+
+;; highlights common programming keywords like "FIX" or "TODO" (add ":" at the end the world)
+(defun font-lock-comment-annotations ()
+  (font-lock-add-keywords
+   nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
+          1 font-lock-warning-face t))))
+
+(add-hook 'prog-mode-hook 'font-lock-comment-annotations)
+
+
+(setq info-header-line nil)
+(setq info-use-header-line nil) 
 #+END_SRC
 * Packages
 ** ace-jump-mode
 #+BEGIN_SRC emacs-lisp
+(require 'ace-jump-mode)
 (global-set-key (kbd "C-c a") 'ace-jump-mode)
 #+END_SRC
 ** helm
@@ -174,7 +202,11 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "C-x r b") 'helm-filtered-bookmarks)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-x f") 'helm-find)
 (global-set-key (kbd "C-x b") 'helm-buffers-list)
+(global-set-key (kbd "C-c s") 'helm-swoop)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ;; (eg. open folders)
 #+END_SRC
 *** searching
 #+BEGIN_SRC emacs-lisp
@@ -268,8 +300,11 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 #+END_SRC
 ** smex
 #+BEGIN_SRC emacs-lisp
+(require 'smex)
+(smex-initialize)
 (require 'helm-smex)
 (global-set-key [remap execute-extended-command] #'helm-smex)
+(global-set-key (kbd "M-X") #'helm-smex-major-mode-commands)
 #+END_SRC
 ** magit
 #+BEGIN_SRC emacs-lisp
@@ -282,6 +317,9 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 #+END_SRC
 ** org-mode
 #+BEGIN_SRC emacs-lisp
+(require 'latex-math-preview)
+(require 'latex-unicode-math-mode)
+
 (setq org-startup-indented t) ;; Enable by default "org-indent-mode"
 
 ;; Set calandar with french names
@@ -315,6 +353,10 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 ;; org-bullets (show bullets as UTF-8 characters)
 (require 'org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+(setq org-src-fontify-natively t) ;; syntaxical coloration for sources block
+
+(setq org-latex-create-formula-image-program 'imagemagick)
 #+END_SRC
 ** ispell
 #+BEGIN_SRC emacs-lisp
@@ -331,15 +373,17 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 #+END_SRC
 ** linum hlinum
 #+BEGIN_SRC emacs-lisp
+(require 'hlinum)
+(hlinum-activate)
 ;; (global-linum-mode 1) ;; Enabling linum-mode (display line numbers on the left bar) globally
 #+END_SRC
 ** yasnippet
 #+BEGIN_SRC emacs-lisp
 (require 'yasnippet)
-;;(yas-global-mode t) ;; Set yasnippet enable globally
+;;(yas-global-mode 1) ;; enable yasnippet globally
 ;;(add-to-list 'yas-snippet-dirs
 ;;             "~/.emacs.d/private/snippets/") ;; Add a directory of snippets to yasnippet
-;;(yas/reload-all) ;; Reload all ; it's needed to make yas-minor-mode works (to get the loaded snippets)
+(yas/reload-all) ;; Reload all ; it's needed to make yas-minor-mode works (to get the loaded snippets)
 (global-set-key (kbd "C-c y") 'yas-minor-mode)
 #+END_SRC
 ** syslog-mode
@@ -385,21 +429,91 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 (window-numbering-mode)
 (spaceline-toggle-anzu)
 #+END_SRC
+** irony
+#+BEGIN_SRC emacs-lisp
+(require 'irony)
+
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+#+END_SRC
 ** company
+*** settings & backends
 #+BEGIN_SRC emacs-lisp
 (require 'company)
-(global-company-mode t)
-(add-hook 'after-init-hook 'global-company-mode)
-(global-set-key (kbd "s-M-SPC") 'company-complete)
-(add-to-list 'company-backends 'company-irony)
-(add-to-list 'company-backends 'company-irony-c-headers)
-(setq company-minimum-prefix-length 2)
+(require 'pos-tip)
+(require 'company-c-headers)
+(require 'company-irony)
+(require 'company-statistics)
+(require 'company-quickhelp)
 
+(global-company-mode t)
+(company-quickhelp-mode 1)
+
+(setq company-backends
+      '(company-c-headers
+        company-irony
+        ))
+
+(setq tab-always-indent 'complete)  ;; use 't when company is disabled
+(add-to-list 'completion-styles 'initials t)
+
+;; Stop completion-at-point from popping up completion buffers so eagerly
+(setq completion-cycle-threshold 5)
+
+
+(eval-after-load 'company
+  '(progn
+     (define-key company-active-map (kbd "RET") nil)
+     (setq company-idle-delay 0.125
+           company-minimum-prefix-length 1
+           company-require-match nil
+           company-transformers '(company-sort-by-occurrence)
+           company-dabbrev-ignore-case nil
+           company-dabbrev-downcase nil
+           company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
+                               company-preview-frontend
+                               company-echo-metadata-frontend))))
+
+
+(add-hook 'after-init-hook 'company-statistics-mode)
+(setq company-tooltip-limit 20)                      ; bigger popup window
+(setq company-tooltip-align-annotations 't)          ; align annotations to the right tooltip border
+(setq company-idle-delay 0.3)                        ; decrease delay before autocompletion popup shows
+(global-set-key (kbd "C-c /") 'company-files)        ; Force complete file names on "C-c /" key
+(eval-after-load 'company
+  '(define-key company-active-map (kbd "M-h") #'company-quickhelp-manual-begin))
+
+#+END_SRC
+*** fix for yasnisppet
+#+BEGIN_SRC emacs-lisp
+;; Add yasnippet support for all company backends
+;; https://github.com/syl20bnr/spacemacs/pull/179
+(defvar company-mode/enable-yas t
+  "Enable yasnippet for all backends.")
+
+(defun company-mode/backend-with-yas (backend)
+  (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+      backend
+    (append (if (consp backend) backend (list backend))
+            '(:with company-yasnippet))))
+
+(setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
 #+END_SRC
 ** flycheck
 #+BEGIN_SRC emacs-lisp
+(require 'flycheck)
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+(add-to-list 'flycheck-disabled-checkers 'c/c++-clang)
 #+END_SRC
 ** rainbow-delimiters
 #+BEGIN_SRC emacs-lisp
@@ -410,10 +524,22 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 #+BEGIN_SRC emacs-lisp
 (require 'smartparens)
 (show-smartparens-global-mode +1)
+(add-hook 'prog-mode-hook 'smartparens-mode)
 #+END_SRC
 ** pdf-tools
 #+BEGIN_SRC emacs-lisp
 (pdf-tools-install)
+#+END_SRC
+** which-key
+#+BEGIN_SRC emacs-lisp
+(require 'which-key)
+(which-key-mode)
+(setq which-key-idle-delay 0.4)
+#+END_SRC
+** golden-ratio
+#+BEGIN_SRC emacs-lisp
+(require 'golden-ratio)
+(golden-ratio-mode 1)
 #+END_SRC
 * Global shortcuts
 #+BEGIN_SRC emacs-lisp
@@ -435,11 +561,25 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 
 ;; kill-buffer & kill-this-buffer remapping
 (global-set-key (kbd "C-x C-k") 'kill-buffer)
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
+;;(global-set-key (kbd "C-x k") 'kill-this-buffer)
+
+(defun kill-current-buffer ()
+    (interactive)
+    (kill-buffer (current-buffer)))
+
+(global-set-key (kbd "C-x k") 'kill-current-buffer)
 
 ;; quick calculation
 (global-set-key (kbd "C-c c") 'quick-calc)
 
 ;; ansi-term
 (global-set-key (kbd "C-c m a") 'ansi-term)
+
+;; read-only mode
+(global-set-key (kbd "C-x C-g") 'read-only-mode)
+#+END_SRC
+* Finish
+#+BEGIN_SRC emacs-lisp
+;; display the time needed by emacs to start
+(message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 #+END_SRC

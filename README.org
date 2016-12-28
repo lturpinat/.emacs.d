@@ -1,1 +1,4 @@
-My emacs configuration files
+#+TITLE: My emacs configuration files
+#+AUTHOR: Louis Turpinat
+
+*My Emacs configuration files*
