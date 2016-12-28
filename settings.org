@@ -132,19 +132,19 @@
 
 (display-time) ;; display time
 
-(setq battery-mode-line-format " [%p]") ;; set battery display format (in percentage)
 (setq display-time-default-load-average nil) ;; remove system load average (which is usually by the time display)
+(setq battery-mode-line-format " [%p]") ;; set battery display format (in percentage)
 
 (setq auto-save-interval 20) ;; save buffer every 20 characters typed
 
-(delete-selection-mode t) ;; enable text overwriting (highlighted text is removed when a key is pressed)
+(delete-selection-mode t) ;; enable text overwriting (selected text is removed when a key is pressed)
 
 (setq dired-listing-switches "-alh") ;; ls args for dired (hidden files & folders, listed with human readable units)
 
 (setq scroll-preserve-screen-position 1) ;; keep cursor at same position when scrolling
 
 (when (string= system-name "atlas")
-  (display-battery-mode)) ;; display battery percentage (only on "atlas" workstation)
+  (display-battery-mode)) ;; display battery percentage (only on my laptop named "atlas")
 
 (setq explicit-shell-file-name "/bin/zsh") ;; set zsh terminal emulator by default
 
@@ -177,9 +177,18 @@
 
 (add-hook 'prog-mode-hook 'font-lock-comment-annotations)
 
-
 (setq info-header-line nil)
 (setq info-use-header-line nil) 
+
+;; set default compilation command
+(setq compile-command "gcc *.c -o programme")
+
+;; set default environment for gdb interface
+(setq
+ ;; use gdb-many-windows by default
+ gdb-many-windows t
+ ;; Non-nil means display source file containing the main routine at startup
+ gdb-show-main t)
 #+END_SRC
 * Packages
 ** ace-jump-mode
@@ -304,7 +313,6 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 (smex-initialize)
 (require 'helm-smex)
 (global-set-key [remap execute-extended-command] #'helm-smex)
-(global-set-key (kbd "M-X") #'helm-smex-major-mode-commands)
 #+END_SRC
 ** magit
 #+BEGIN_SRC emacs-lisp
@@ -356,7 +364,7 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 
 (setq org-src-fontify-natively t) ;; syntaxical coloration for sources block
 
-(setq org-latex-create-formula-image-program 'imagemagick)
+(setq org-latex-create-formula-image-program 'imagemagick) ;; generate latex formulas with imagemagick
 #+END_SRC
 ** ispell
 #+BEGIN_SRC emacs-lisp
@@ -371,11 +379,11 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 
 (global-set-key (kbd "C-c t") 'direx:jump-to-directory-other-window)
 #+END_SRC
-** linum hlinum
+** linum and hlinum
 #+BEGIN_SRC emacs-lisp
 (require 'hlinum)
-(hlinum-activate)
-;; (global-linum-mode 1) ;; Enabling linum-mode (display line numbers on the left bar) globally
+(hlinum-activate) ;; highlights current line
+(add-hook 'prog-mode-hook 'linum-mode) ;; enable linum-mode in prog-mode
 #+END_SRC
 ** yasnippet
 #+BEGIN_SRC emacs-lisp
@@ -426,8 +434,9 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 (defun window-numbering-install-mode-line (&optional position)
   "Do nothing.")
 
-(window-numbering-mode)
-(spaceline-toggle-anzu)
+(spaceline-toggle-minor-modes-off) ;; hide minor-modes in bar
+(window-numbering-mode) ;; display windows number
+(spaceline-toggle-anzu) ;; when searching, display the number of matching results
 #+END_SRC
 ** irony
 #+BEGIN_SRC emacs-lisp
@@ -441,6 +450,7 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
     'irony-completion-at-point-async)
   (define-key irony-mode-map [remap complete-symbol]
     'irony-completion-at-point-async))
+
 (add-hook 'irony-mode-hook 'my-irony-mode-hook)
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 #+END_SRC
@@ -456,6 +466,8 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 
 (global-company-mode t)
 (company-quickhelp-mode 1)
+
+(setq company-backends (delete 'company-semantic company-backends))
 
 (setq company-backends
       '(company-c-headers
@@ -515,6 +527,13 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 
 (add-to-list 'flycheck-disabled-checkers 'c/c++-clang)
 #+END_SRC
+** semantic
+#+BEGIN_SRC emacs-lisp
+(require 'cc-mode)
+(require 'semantic)
+
+(global-semantic-idle-summary-mode 1) ;; display function's prototype in minibuffer
+#+END_SRC
 ** rainbow-delimiters
 #+BEGIN_SRC emacs-lisp
 (require 'rainbow-delimiters)
@@ -523,8 +542,8 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 ** smartparens
 #+BEGIN_SRC emacs-lisp
 (require 'smartparens)
-(show-smartparens-global-mode +1)
-(add-hook 'prog-mode-hook 'smartparens-mode)
+(show-smartparens-global-mode +1) ;; globally highlight paired brackets/embraces
+(add-hook 'prog-mode-hook 'smartparens-mode) ;; automatically add paired brackets/embraces
 #+END_SRC
 ** pdf-tools
 #+BEGIN_SRC emacs-lisp
@@ -577,6 +596,12 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 
 ;; read-only mode
 (global-set-key (kbd "C-x C-g") 'read-only-mode)
+
+;; start compilation without re-asking compilation command
+(global-set-key (kbd "<f5>") (lambda ()
+                               (interactive)
+                               (setq-local compilation-read-command nil)
+                               (call-interactively 'compile)))
 #+END_SRC
 * Finish
 #+BEGIN_SRC emacs-lisp
