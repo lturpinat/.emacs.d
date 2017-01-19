@@ -80,6 +80,8 @@
   spotify
   smex
   smartparens
+  slime
+  slime-company
   syslog-mode
   spaceline
   wc-mode
@@ -460,6 +462,14 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 (add-hook 'irony-mode-hook 'my-irony-mode-hook)
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 #+END_SRC
+** slime
+#+BEGIN_SRC emacs-lisp
+(require 'slime)
+
+;;In order to install sbcl properly : http://www.sbcl.org/getting.html
+(setq inferior-lisp-program "/usr/local/bin/sbcl")
+(setq slime-contribs '(slime-fancy))
+#+END_SRC
 ** company
 *** settings & backends
 #+BEGIN_SRC emacs-lisp
@@ -469,6 +479,7 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 (require 'company-irony)
 (require 'company-statistics)
 (require 'company-quickhelp)
+(require 'slime-company)
 
 (global-company-mode t)
 (company-quickhelp-mode 1)
@@ -479,6 +490,8 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
       '(company-c-headers
         company-irony
         ))
+
+(slime-setup '(slime-fancy slime-company))
 
 (setq tab-always-indent 'complete)  ;; use 't when company is disabled
 (add-to-list 'completion-styles 'initials t)
@@ -509,6 +522,10 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 (eval-after-load 'company
   '(define-key company-active-map (kbd "M-h") #'company-quickhelp-manual-begin))
 
+(define-key company-active-map (kbd "\C-n") 'company-select-next)
+(define-key company-active-map (kbd "\C-p") 'company-select-previous)
+(define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
+(define-key company-active-map (kbd "M-.") 'company-show-location)
 #+END_SRC
 *** fix for yasnisppet
 #+BEGIN_SRC emacs-lisp
@@ -565,6 +582,11 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 #+BEGIN_SRC emacs-lisp
 (require 'golden-ratio)
 (golden-ratio-mode 1)
+#+END_SRC
+* Elisp
+Load external elisp files :
+#+BEGIN_SRC emacs-lisp
+ (load-file "~/.emacs.d/elisp/QuickC.el")
 #+END_SRC
 * Global shortcuts
 #+BEGIN_SRC emacs-lisp
