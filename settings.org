@@ -128,7 +128,7 @@
                     :weight 'normal
                     :width 'normal)
 
-(load-theme 'blackboard t) ;; set theme
+(load-theme 'sanityinc-tomorrow-eighties t) ;; set theme
 
 ;; modeline
 (line-number-mode 1)
@@ -185,7 +185,7 @@
 (setq info-use-header-line nil) 
 
 ;; set default compilation command
-(setq compile-command "gcc *.c -o programme")
+(setq compile-command "make -C ~/Desktop/projet-c/")
 
 ;; set default environment for gdb interface
 (setq
@@ -435,15 +435,10 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 ** spaceline
 #+BEGIN_SRC emacs-lisp
 (require 'spaceline-config)
-(spaceline-spacemacs-theme)
+(spaceline-emacs-theme)
 (spaceline-helm-mode)
 
-(require 'window-numbering)
-(defun window-numbering-install-mode-line (&optional position)
-  "Do nothing.")
-
 (spaceline-toggle-minor-modes-off) ;; hide minor-modes in bar
-(window-numbering-mode) ;; display windows number
 (spaceline-toggle-anzu) ;; when searching, display the number of matching results
 #+END_SRC
 ** irony
@@ -630,6 +625,10 @@ Load external elisp files :
                                (interactive)
                                (setq-local compilation-read-command nil)
                                (call-interactively 'compile)))
+
+(global-set-key (kbd "s-c") 'uncomment-region)
+
+
 #+END_SRC
 * Finish
 #+BEGIN_SRC emacs-lisp
