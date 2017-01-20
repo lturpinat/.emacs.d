@@ -21,77 +21,78 @@
 
   (defvar packages
     '(
-    ace-jump-mode
-    anzu
-    beacon
-    bm
-    
-    company
-    company-c-headers
-    company-irony
-    company-quickhelp
-    company-statistics
+      ace-jump-mode
+      anzu
+      beacon
+      bm
+      
+      company
+      company-c-headers
+      company-irony
+      company-quickhelp
+      company-statistics
 
-    calfw
-    csharp-mode
-    dash-at-point
-    direx
-    expand-region
-    focus
+      calfw
+      csharp-mode
+      dash-at-point
+      direx
+      expand-region
+      focus
 
-    flycheck
-    flycheck-irony
+      flycheck
+      flycheck-irony
 
-    fix-word
-    golden-ratio
+      fix-word
+      golden-ratio
 
-    helm
-    helm-swoop 
-    helm-flx
-    helm-fuzzier
-    helm-dash
-    helm-ls-git
-    helm-smex
-    
-    highlight
-    highlight-numbers
-    htmlize
-    hlinum
-    iedit
+      helm
+      helm-swoop 
+      helm-flx
+      helm-fuzzier
+      helm-dash
+      helm-ls-git
+      helm-smex
+      
+      highlight
+      highlight-numbers
+      htmlize
+      hlinum
+      iedit
 
-    latex-extra
-    latex-math-preview
-    latex-unicode-math-mode  
-    minimap
-    markdown-mode
-    magit
-    multiple-cursors
-    ox-reveal
-    org-bullets
-    pdf-tools
-    python-mode
-    popwin
-    pos-tip
-    rainbow-delimiters
-    spotify
-    smex
-    smartparens
-    slime
-    slime-company
-    syslog-mode
-    spaceline
-    wc-mode
-    web-mode
-    wttrin
-    which-key
-    yaml-mode
-    yasnippet  
-    
-    ;; themes
-    solarized-theme
-    zenburn-theme
-    blackboard-theme
-     )
+      latex-extra
+      latex-math-preview
+      latex-unicode-math-mode  
+      minimap
+      markdown-mode
+      magit
+      multiple-cursors
+      ox-reveal
+      org-bullets
+      pdf-tools
+      python-mode
+      popwin
+      pos-tip
+      rainbow-delimiters
+      spotify
+      smex
+      smartparens
+      slime
+      slime-company
+      syslog-mode
+      spaceline
+      undo-tree
+      wc-mode
+      web-mode
+      wttrin
+      which-key
+      yaml-mode
+      yasnippet  
+      
+      ;; themes
+      solarized-theme
+      zenburn-theme
+      blackboard-theme
+      )
   )
 
   (dolist (p packages)
@@ -597,7 +598,7 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 Load external elisp files :
 #+BEGIN_SRC emacs-lisp
   (load-file "~/.emacs.d/elisp/QuickC.el")
-  (load-file "~/.emacs.d/elisp/PackageInstallAndRefresh.el")
+  (load-file "~/.emacs.d/elisp/PackageRefreshAndInstall.el")
 #+END_SRC
 
 * Global shortcuts
