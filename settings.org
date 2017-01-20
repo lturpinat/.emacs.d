@@ -4,107 +4,103 @@
 * Basic settings
 ** Starting
 #+BEGIN_SRC emacs-lisp
-(require 'cl) ;; common-lisp dep. for packages & emacs advanced features
-(defvar my-start-time (current-time)
-  "Time when Emacs was started")
+  (defvar my-start-time (current-time)
+    "Time when Emacs was started")
 #+END_SRC
 ** Package manager
 #+BEGIN_SRC emacs-lisp
-(require 'package)
-(package-initialize)
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/"))
+  (add-to-list 'package-archives 
+               '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives
+               '("org" . "http://orgmode.org/elpa/") t)
 
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives 
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
-             '("org" . "http://orgmode.org/elpa/") t)
+  (when (not package-archive-contents)
+    (package-refresh-contents))
 
-(when (not package-archive-contents)
-  (package-refresh-contents))
+  (defvar packages
+    '(
+    ace-jump-mode
+    anzu
+    beacon
+    bm
+    
+    company
+    company-c-headers
+    company-irony
+    company-quickhelp
+    company-statistics
 
-(defvar packages
-  '(
-  ace-jump-mode
-  anzu
-  beacon
-  bm
-  
-  company
-  company-c-headers
-  company-irony
-  company-quickhelp
-  company-statistics
+    calfw
+    csharp-mode
+    dash-at-point
+    direx
+    expand-region
+    focus
 
-  calfw
-  csharp-mode
-  dash-at-point
-  direx
-  expand-region
-  focus
+    flycheck
+    flycheck-irony
 
-  flycheck
-  flycheck-irony
+    fix-word
+    golden-ratio
 
-  fix-word
-  golden-ratio
+    helm
+    helm-swoop 
+    helm-flx
+    helm-fuzzier
+    helm-dash
+    helm-ls-git
+    helm-smex
+    
+    highlight
+    highlight-numbers
+    htmlize
+    hlinum
+    iedit
 
-  helm
-  helm-swoop 
-  helm-flx
-  helm-fuzzier
-  helm-dash
-  helm-ls-git
-  helm-smex
-  
-  highlight
-  highlight-numbers
-  htmlize
-  hlinum
-  iedit
+    latex-extra
+    latex-math-preview
+    latex-unicode-math-mode  
+    minimap
+    markdown-mode
+    magit
+    multiple-cursors
+    ox-reveal
+    org-bullets
+    pdf-tools
+    python-mode
+    popwin
+    pos-tip
+    rainbow-delimiters
+    spotify
+    smex
+    smartparens
+    slime
+    slime-company
+    syslog-mode
+    spaceline
+    wc-mode
+    web-mode
+    wttrin
+    which-key
+    yaml-mode
+    yasnippet  
+    
+    ;; themes
+    solarized-theme
+    zenburn-theme
+    blackboard-theme
+     )
+  )
 
-  latex-extra
-  latex-math-preview
-  latex-unicode-math-mode  
-  minimap
-  markdown-mode
-  magit
-  multiple-cursors
-  ox-reveal
-  org-bullets
-  pdf-tools
-  python-mode
-  popwin
-  pos-tip
-  rainbow-delimiters
-  spotify
-  smex
-  smartparens
-  slime
-  slime-company
-  syslog-mode
-  spaceline
-  wc-mode
-  web-mode
-  wttrin
-  window-numbering
-  which-key
-  yaml-mode
-  yasnippet  
-  
-  ;; themes
-  solarized-theme
-  zenburn-theme
-  blackboard-theme
-   )
-)
-
-(dolist (p packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
-
-(package-refresh-contents)
+  (dolist (p packages)
+    (when (not (package-installed-p p))
+      (package-install p)))
 #+END_SRC
+
+#+RESULTS:
+
 ** Who am I
 #+BEGIN_SRC emacs-lisp
 (setq user-full-name "Louis Turpinat")
@@ -185,7 +181,8 @@
 (setq info-use-header-line nil) 
 
 ;; set default compilation command
-(setq compile-command "make -C ~/Desktop/projet-c/")
+;;(setq compile-command "make -C ~/Desktop/projet-c/")
+(setq compile-command "gcc *.c -o programme")
 
 ;; set default environment for gdb interface
 (setq
@@ -361,6 +358,8 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 ;; execute external programs.
 (setq org-latex-pdf-process
       '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+(setq org-src-tab-acts-natively t) ;; automatically enable tab indentation on source blocks
 
 ;; org-bullets (show bullets as UTF-8 characters)
 (require 'org-bullets)
@@ -552,6 +551,22 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 
 (global-semantic-idle-summary-mode 1) ;; display function's prototype in minibuffer
 #+END_SRC
+** undo-tree
+#+BEGIN_SRC emacs-lisp
+  (require 'undo-tree)
+  (global-undo-tree-mode)
+
+  ;;Workaround to prevent linum from glitching
+  (defun undo-tree-visualizer-update-linum (&rest args)
+    (linum-update undo-tree-visualizer-parent-buffer))
+
+  (advice-add 'undo-tree-visualize-undo :after #'undo-tree-visualizer-update-linum)
+  (advice-add 'undo-tree-visualize-redo :after #'undo-tree-visualizer-update-linum)
+    (advice-add 'undo-tree-visualize-undo-to-x :after #'undo-tree-visualizer-update-linum)
+  (advice-add 'undo-tree-visualize-redo-to-x :after #'undo-tree-visualizer-update-linum)
+  (advice-add 'undo-tree-visualizer-mouse-set :after #'undo-tree-visualizer-update-linum)
+  (advice-add 'undo-tree-visualizer-set :after #'undo-tree-visualizer-update-linum)
+#+END_SRC
 ** rainbow-delimiters
 #+BEGIN_SRC emacs-lisp
 (require 'rainbow-delimiters)
@@ -581,8 +596,10 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 * Elisp
 Load external elisp files :
 #+BEGIN_SRC emacs-lisp
- (load-file "~/.emacs.d/elisp/QuickC.el")
+  (load-file "~/.emacs.d/elisp/QuickC.el")
+  (load-file "~/.emacs.d/elisp/PackageInstallAndRefresh.el")
 #+END_SRC
+
 * Global shortcuts
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c m c") 'set-rectangular-region-anchor) ;; Create a rectangular region (multiple-cursors)
