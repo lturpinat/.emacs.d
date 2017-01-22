@@ -9,95 +9,97 @@
 #+END_SRC
 ** Package manager
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/"))
-  (add-to-list 'package-archives 
-               '("marmalade" . "http://marmalade-repo.org/packages/"))
-  (add-to-list 'package-archives
-               '("org" . "http://orgmode.org/elpa/") t)
+    (add-to-list 'package-archives
+                 '("melpa" . "https://melpa.org/packages/"))
+    (add-to-list 'package-archives 
+                 '("marmalade" . "http://marmalade-repo.org/packages/"))
+    (add-to-list 'package-archives
+                 '("org" . "http://orgmode.org/elpa/") t)
 
-  (when (not package-archive-contents)
-    (package-refresh-contents))
+    (when (not package-archive-contents)
+      (package-refresh-contents))
 
-  (defvar packages
-    '(
-      ace-jump-mode
-      anzu
-      beacon
-      bm
-      
-      company
-      company-c-headers
-      company-irony
-      company-quickhelp
-      company-statistics
+    (defvar packages
+      '(
+        ace-jump-mode
+        anzu
+        beacon
+        bm
+        
+        company
+        company-c-headers
+        company-irony
+        company-quickhelp
+        company-statistics
 
-      calfw
-      csharp-mode
-      dash-at-point
-      direx
-      expand-region
-      focus
+        calfw
+        csharp-mode
+        dash-at-point
+        direx
+        expand-region
+        focus
 
-      flycheck
-      flycheck-irony
+        flycheck
+        flycheck-irony
 
-      fix-word
-      golden-ratio
+        fix-word
+        golden-ratio
 
-      helm
-      helm-swoop 
-      helm-flx
-      helm-fuzzier
-      helm-dash
-      helm-ls-git
-      helm-smex
-      
-      highlight
-      highlight-numbers
-      htmlize
-      hlinum
-      iedit
+        helm
+        helm-swoop 
+        helm-flx
+        helm-fuzzier
+        helm-dash
+        helm-ls-git
+        helm-smex
+        
+        highlight
+        highlight-numbers
+        htmlize
+        hlinum
+        iedit
+        javadoc-lookup
 
-      latex-extra
-      latex-math-preview
-      latex-unicode-math-mode  
-      minimap
-      markdown-mode
-      magit
-      multiple-cursors
-      ox-reveal
-      org-bullets
-      pdf-tools
-      python-mode
-      popwin
-      pos-tip
-      rainbow-delimiters
-      spotify
-      smex
-      smartparens
-      slime
-      slime-company
-      syslog-mode
-      spaceline
-      undo-tree
-      wc-mode
-      web-mode
-      wttrin
-      which-key
-      yaml-mode
-      yasnippet  
-      
-      ;; themes
-      solarized-theme
-      zenburn-theme
-      blackboard-theme
-      )
-  )
+        latex-extra
+        latex-math-preview
+        latex-unicode-math-mode  
+        minimap
+        markdown-mode
+        magit
+        multiple-cursors
+        ox-reveal
+        org-bullets
+        pdf-tools
+        python-mode
+        popwin
+        pos-tip
+        projectile
+        rainbow-delimiters
+        spotify
+        smex
+        smartparens
+        slime
+        slime-company
+        syslog-mode
+        spaceline
+        undo-tree
+        wc-mode
+        web-mode
+        wttrin
+        which-key
+        yaml-mode
+        yasnippet  
+        
+        ;; themes
+        solarized-theme
+        zenburn-theme
+        blackboard-theme
+        )
+    )
 
-  (dolist (p packages)
-    (when (not (package-installed-p p))
-      (package-install p)))
+    (dolist (p packages)
+      (when (not (package-installed-p p))
+        (package-install p)))
 #+END_SRC
 
 #+RESULTS:
@@ -170,7 +172,7 @@
 
 (setq tab-width 2) ;; set default indentation to two spaces
 
-;; highlights common programming keywords like "FIX" or "TODO" (add ":" at the end the world)
+;; highlights common programming keywords like "FIX" or "TODO" (add ":" at the end the word)
 (defun font-lock-comment-annotations ()
   (font-lock-add-keywords
    nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
