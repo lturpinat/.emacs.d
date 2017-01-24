@@ -160,13 +160,16 @@
 
 (when window-system (set-frame-size (selected-frame) 87 42)) ;; set default size in order to prevent spaceline from shrinking
 
-(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-  backup-by-copying t    ; Don't delink hardlinks
-  version-control t      ; Use version numbers on backups
-  delete-old-versions t  ; Automatically delete excess backups
-  kept-new-versions 20   ; how many of the newest versions to keep
-  kept-old-versions 5    ; and how many of the old
-  )
+;;(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+;;  backup-by-copying t    ; Don't delink hardlinks
+;;  version-control t      ; Use version numbers on backups
+;;  delete-old-versions t  ; Automatically delete excess backups
+;;  kept-new-versions 20   ; how many of the newest versions to keep
+;;  kept-old-versions 5    ; and how many of the old
+;;  )
+
+;; disable backups
+(setq backup-inhibited t)
 
 (define-key read-expression-map [(tab)] 'hippie-expand) ;; "enable tab completion in the `eval-expression` minibuffer, I just bind the tab key to `hippie-expand` in the `read-expression-map`"
 
@@ -193,6 +196,16 @@
  gdb-many-windows t
  ;; Non-nil means display source file containing the main routine at startup
  gdb-show-main t)
+
+;; set favorite coding system
+(prefer-coding-system 'utf-8)
+(define-coding-system-alias 'UTF-8 'utf-8)
+
+;; auto refresh files when changed from disk
+(global-auto-revert-mode t)
+
+;; disable mouse scrolling acceleration
+(setq mouse-wheel-progressive-speed nil)
 #+END_SRC
 * Packages
 ** ace-jump-mode
@@ -371,6 +384,9 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 (setq org-src-fontify-natively t) ;; syntaxical coloration for sources block
 
 (setq org-latex-create-formula-image-program 'imagemagick) ;; generate latex formulas with imagemagick
+
+;; See down arrow instead of "..." when we have subtrees
+(setq org-ellipsis "⤵")
 #+END_SRC
 ** ispell
 #+BEGIN_SRC emacs-lisp
@@ -646,8 +662,14 @@ Load external elisp files :
                                (setq-local compilation-read-command nil)
                                (call-interactively 'compile)))
 
+;; uncomment a region commented wit "C-c C-c"
 (global-set-key (kbd "s-c") 'uncomment-region)
 
+;; Disable suspend emacs
+(global-unset-key (kbd "C-z"))
+
+;; auto-indent when inserting a new line
+(define-key global-map (kbd "RET") 'newline-and-indent)
 
 #+END_SRC
 * Finish
