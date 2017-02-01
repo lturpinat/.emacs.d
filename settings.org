@@ -8,7 +8,6 @@
     "Time when Emacs was started")
 #+END_SRC
 ** Package manager
-CLOCK: [2017-01-29 Sun 12:52]
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/"))
@@ -38,7 +37,6 @@ CLOCK: [2017-01-29 Sun 12:52]
       dash-at-point
       direx
       expand-region
-      elisp-slime-nav
       focus
 
       flycheck
@@ -663,13 +661,6 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 #+BEGIN_SRC emacs-lisp
 (require 'golden-ratio)
 (golden-ratio-mode 1)
-#+END_SRC
-** elisp-slime-nav
-#+BEGIN_SRC emacs-lisp
-  (require 'elisp-slime-nav)
-
-  (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
-    (add-hook hook 'turn-on-elisp-slime-nav-mode))''
 #+END_SRC
 * Elisp
 Load external elisp files :
