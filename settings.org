@@ -8,98 +8,101 @@
     "Time when Emacs was started")
 #+END_SRC
 ** Package manager
+CLOCK: [2017-01-29 Sun 12:52]
 #+BEGIN_SRC emacs-lisp
-    (add-to-list 'package-archives
-                 '("melpa" . "https://melpa.org/packages/"))
-    (add-to-list 'package-archives 
-                 '("marmalade" . "http://marmalade-repo.org/packages/"))
-    (add-to-list 'package-archives
-                 '("org" . "http://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/"))
+  (add-to-list 'package-archives 
+               '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives
+               '("org" . "http://orgmode.org/elpa/") t)
 
-    (when (not package-archive-contents)
-      (package-refresh-contents))
+  (when (not package-archive-contents)
+    (package-refresh-contents))
 
-    (defvar packages
-      '(
-        ace-jump-mode
-        anzu
-        beacon
-        bm
-        
-        company
-        company-c-headers
-        company-irony
-        company-quickhelp
-        company-statistics
+  (defvar packages
+    '(
+      ace-jump-mode
+      anzu
+      beacon
+      bm
+      
+      company
+      company-c-headers
+      company-irony
+      company-quickhelp
+      company-statistics
 
-        calfw
-        csharp-mode
-        dash-at-point
-        direx
-        expand-region
-        focus
+      calfw
+      csharp-mode
+      dash-at-point
+      direx
+      expand-region
+      elisp-slime-nav
+      focus
 
-        flycheck
-        flycheck-irony
+      flycheck
+      flycheck-irony
 
-        fix-word
-        golden-ratio
+      fix-word
+      golden-ratio
 
-        helm
-        helm-swoop 
-        helm-flx
-        helm-fuzzier
-        helm-dash
-        helm-ls-git
-        helm-smex
-        
-        highlight
-        highlight-numbers
-        htmlize
-        hlinum
-        iedit
-        javadoc-lookup
+      helm
+      helm-swoop 
+      helm-flx
+      helm-fuzzier
+      helm-dash
+      helm-ls-git
+      helm-smex
+      
+      highlight
+      highlight-numbers
+      htmlize
+      hlinum
+      iedit
+      javadoc-lookup
 
-        latex-extra
-        latex-math-preview
-        latex-unicode-math-mode  
-        minimap
-        markdown-mode
-        magit
-        multiple-cursors
-        ox-reveal
-        org-bullets
-        pdf-tools
-        python-mode
-        popwin
-        pos-tip
-        projectile
-        rainbow-delimiters
-        spotify
-        smex
-        smartparens
-        slime
-        slime-company
-        syslog-mode
-        spaceline
-        undo-tree
-        wc-mode
-        web-mode
-        wttrin
-        which-key
-        yaml-mode
-        yasnippet  
-        
-        ;; themes
-        solarized-theme
-        zenburn-theme
-        blackboard-theme
-        )
-    )
+      latex-extra
+      latex-math-preview
+      latex-unicode-math-mode  
+      minimap
+      markdown-mode
+      magit
+      multiple-cursors
+      ox-reveal
+      org-bullets
+      org-pomodoro
+      pdf-tools
+      python-mode
+      popwin
+      pos-tip
+      projectile
+      rainbow-delimiters
+      spotify
+      smex
+      smartparens
+      slime
+      slime-company
+      syslog-mode
+      spaceline
+      undo-tree
+      wc-mode
+      web-mode
+      wttrin
+      which-key
+      yaml-mode
+      yasnippet  
+      
+      ;; themes
+      solarized-theme
+      zenburn-theme
+      blackboard-theme
+      )
+  )
 
-    (dolist (p packages)
-      (when (not (package-installed-p p))
-        (package-install p)))
+  (dolist (p packages)
+    (when (not (package-installed-p p))
+      (package-install p)))
 #+END_SRC
 
 #+RESULTS:
@@ -360,51 +363,57 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 #+END_SRC
 ** org-mode
 #+BEGIN_SRC emacs-lisp
-(require 'latex-math-preview)
-(require 'latex-unicode-math-mode)
+  (require 'latex-math-preview)
+  (require 'latex-unicode-math-mode)
 
-(setq org-startup-indented t) ;; Enable by default "org-indent-mode"
+  (setq org-startup-indented t) ;; Enable by default "org-indent-mode"
 
-;; Set calandar with french names
-(setq calendar-week-start-day 1
-      calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi"
-                               "Jeudi" "Vendredi" "Samedi"]
-      calendar-month-name-array ["Janvier" "Février" "Mars" "Avril" "Mai"
-                                 "Juin" "Juillet" "Août" "Septembre"
-                                 "Octobre" "Novembre" "Décembre"])
+  ;; Set calandar with french names
+  (setq calendar-week-start-day 1
+        calendar-day-name-array ["Dimanche" "Lundi" "Mardi" "Mercredi"
+                                 "Jeudi" "Vendredi" "Samedi"]
+        calendar-month-name-array ["Janvier" "Février" "Mars" "Avril" "Mai"
+                                   "Juin" "Juillet" "Août" "Septembre"
+                                   "Octobre" "Novembre" "Décembre"])
 
-(setq european-calendar-style t) ;; Set date format "dd/mm/yy" in general and for org-mode
+  (setq european-calendar-style t) ;; Set date format "dd/mm/yy" in general and for org-mode
 
-(setq calendar-week-start-day 1) ;; Week start with Monday
+  (setq calendar-week-start-day 1) ;; Week start with Monday
 
-;; In order to export latex with syntaxical coloration for code blocks, minted (latex package)
-;; and Pygments (python syntax highlighter) need to be installed. (for pygments : pip install Pygments)
-;; @THANKS (http://joat-programmer.blogspot.fr/2013/07/org-mode-version-8-and-pdf-export-with.html)
+  ;; In order to export latex with syntaxical coloration for code blocks, minted (latex package)
+  ;; and Pygments (python syntax highlighter) need to be installed. (for pygments : pip install Pygments)
+  ;; @THANKS (http://joat-programmer.blogspot.fr/2013/07/org-mode-version-8-and-pdf-export-with.html)
 
-;; Include the latex-exporter
-(require 'ox-latex)
-;; Add minted to the defaults packages to include when exporting.
-(add-to-list 'org-latex-packages-alist '("" "minted"))
-;; Tell the latex export to use the minted package for source
-;; code coloration.
-(setq org-latex-listings 'minted)
-;; Let the exporter use the -shell-escape option to let latex
-;; execute external programs.
-(setq org-latex-pdf-process
-      '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  ;; Include the latex-exporter
+  (require 'ox-latex)
+  ;; Add minted to the defaults packages to include when exporting.
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  ;; Tell the latex export to use the minted package for source
+  ;; code coloration.
+  (setq org-latex-listings 'minted)
+  ;; Let the exporter use the -shell-escape option to let latex
+  ;; execute external programs.
+  (setq org-latex-pdf-process
+        '("xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
-(setq org-src-tab-acts-natively t) ;; automatically enable tab indentation on source blocks
+  (setq org-src-tab-acts-natively t) ;; automatically enable tab indentation on source blocks
 
-;; org-bullets (show bullets as UTF-8 characters)
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  ;; org-bullets (show bullets as UTF-8 characters)
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
-(setq org-src-fontify-natively t) ;; syntaxical coloration for sources block
+  (setq org-src-fontify-natively t) ;; syntaxical coloration for sources block
 
-(setq org-latex-create-formula-image-program 'imagemagick) ;; generate latex formulas with imagemagick
+  (setq org-latex-create-formula-image-program 'imagemagick) ;; generate latex formulas with imagemagick
 
-;; See down arrow instead of "..." when we have subtrees
-(setq org-ellipsis "⤵")
+  ;; See down arrow instead of "..." when we have subtrees
+  (setq org-ellipsis "⤵")
+
+  (global-set-key (kbd "C-c o a") 'org-agenda)
+  (setq org-agenda-files (list "~/todo.org"))
+
+  (setq org-default-notes-file "~/todo.org")
+  (global-set-key (kbd "C-c o c") 'org-capture)
 #+END_SRC
 ** ispell
 #+BEGIN_SRC emacs-lisp
@@ -611,9 +620,25 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 #+END_SRC
 ** smartparens
 #+BEGIN_SRC emacs-lisp
-(require 'smartparens)
-(show-smartparens-global-mode +1) ;; globally highlight paired brackets/embraces
-(add-hook 'prog-mode-hook 'smartparens-mode) ;; automatically add paired brackets/embraces
+  (require 'smartparens)
+  (show-smartparens-global-mode +1) ;; globally highlight paired brackets/embraces
+  (add-hook 'prog-mode-hook 'smartparens-mode) ;; automatically add paired brackets/embraces
+
+  ;; Manage simple quotes with emacs-lisp mode
+  ;; Function from @https://github.com/Fuco1
+  (sp-with-modes sp--lisp-modes
+    ;; disable ', it's the quote character!
+    (sp-local-pair "'" nil :actions nil)
+    ;; also only use the pseudo-quote inside strings where it serve as
+    ;; hyperlink.
+    (sp-local-pair "`" "'" :when '(sp-in-string-p sp-in-comment-p))
+    (sp-local-pair "`" nil
+                   :skip-match (lambda (ms mb me)
+                                 (cond
+                                  ((equal ms "'")
+                                   (or (sp--org-skip-markup ms mb me)
+                                       (not (sp-point-in-string-or-comment))))
+                                  (t (not (sp-point-in-string-or-comment)))))))
 #+END_SRC
 ** pdf-tools
 #+BEGIN_SRC emacs-lisp
@@ -625,10 +650,26 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 (which-key-mode)
 (setq which-key-idle-delay 0.4)
 #+END_SRC
+** javadoc-lookup
+#+BEGIN_SRC emacs-lisp
+(require 'javadoc-lookup)
+;; define local javadoc directory
+(javadoc-add-roots "/usr/share/doc/java8-openjdk/api/")
+
+(global-set-key (kbd "C-c j") 'javadoc-lookup)
+(global-set-key (kbd "C-c i") 'javadoc-add-import)
+#+END_SRC
 ** golden-ratio
 #+BEGIN_SRC emacs-lisp
 (require 'golden-ratio)
 (golden-ratio-mode 1)
+#+END_SRC
+** elisp-slime-nav
+#+BEGIN_SRC emacs-lisp
+  (require 'elisp-slime-nav)
+
+  (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook))
+    (add-hook hook 'turn-on-elisp-slime-nav-mode))''
 #+END_SRC
 * Elisp
 Load external elisp files :
@@ -693,6 +734,6 @@ Load external elisp files :
 #+END_SRC
 * Finish
 #+BEGIN_SRC emacs-lisp
-;; display the time needed by emacs to start
-(message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+  ;; display the time needed by emacs to start
+  (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 #+END_SRC
