@@ -24,8 +24,9 @@
       ace-jump-mode
       anzu
       beacon
+      bug-hunter
       bm
-      
+
       company
       company-c-headers
       company-irony
@@ -52,7 +53,7 @@
       helm-dash
       helm-ls-git
       helm-smex
-      
+
       highlight
       highlight-numbers
       htmlize
@@ -90,11 +91,12 @@
       which-key
       yaml-mode
       yasnippet  
-      
+
       ;; themes
       solarized-theme
       zenburn-theme
       blackboard-theme
+      color-theme-sanityinc-tomorrow
       )
   )
 
@@ -362,7 +364,7 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 ** org-mode
 #+BEGIN_SRC emacs-lisp
   (require 'latex-math-preview)
-  (require 'latex-unicode-math-mode)
+  ;;(require 'latex-unicode-math-mode)
 
   (setq org-startup-indented t) ;; Enable by default "org-indent-mode"
 
