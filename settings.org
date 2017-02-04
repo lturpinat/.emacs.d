@@ -16,6 +16,8 @@
   (add-to-list 'package-archives
                '("org" . "http://orgmode.org/elpa/") t)
 
+  (setq install::fresh 0)
+
   (when (not package-archive-contents)
     (package-refresh-contents))
 
@@ -77,6 +79,7 @@
       pos-tip
       projectile
       rainbow-delimiters
+      restart-emacs
       spotify
       smex
       smartparens
@@ -98,14 +101,16 @@
       blackboard-theme
       color-theme-sanityinc-tomorrow
       )
-  )
+    )
 
   (dolist (p packages)
     (when (not (package-installed-p p))
-      (package-install p)))
-#+END_SRC
+      (package-install p)
+      (setq install:fresh 1)))
 
-#+RESULTS:
+  (when (= install::fresh 1)
+    (restart-emacs))
+#+END_SRC
 
 ** Who am I
 #+BEGIN_SRC emacs-lisp
@@ -639,10 +644,6 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
                                    (or (sp--org-skip-markup ms mb me)
                                        (not (sp-point-in-string-or-comment))))
                                   (t (not (sp-point-in-string-or-comment)))))))
-#+END_SRC
-** pdf-tools
-#+BEGIN_SRC emacs-lisp
-(pdf-tools-install)
 #+END_SRC
 ** which-key
 #+BEGIN_SRC emacs-lisp
