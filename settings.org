@@ -696,7 +696,6 @@ Load external elisp files :
 #+BEGIN_SRC emacs-lisp
   (load-file "~/.emacs.d/elisp/QuickC.el")
   (load-file "~/.emacs.d/elisp/PackageRefreshAndInstall.el")
-  (load-file "~/.emacs.d/elisp/tbemail.el")
 #+END_SRC
 
 * Global shortcuts
