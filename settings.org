@@ -26,8 +26,9 @@
       ace-jump-mode
       anzu
       beacon
-      bug-hunter
       bm
+      bug-hunter
+      calfw
 
       company
       company-c-headers
@@ -35,63 +36,67 @@
       company-quickhelp
       company-statistics
 
-      calfw
       csharp-mode
       dash-at-point
       direx
       expand-region
-      focus
+      fix-word
 
       flycheck
       flycheck-irony
 
-      fix-word
+      focus
       golden-ratio
 
       helm
-      helm-swoop 
+      helm-dash
       helm-flx
       helm-fuzzier
-      helm-dash
       helm-ls-git
       helm-smex
+      helm-swoop
 
       highlight
       highlight-numbers
-      htmlize
       hlinum
+      htmlize
       iedit
       javadoc-lookup
 
       latex-extra
       latex-math-preview
-      latex-unicode-math-mode  
-      minimap
-      markdown-mode
+      latex-unicode-math-mode
+
       magit
+      markdown-mode
+      minimap
       multiple-cursors
-      ox-reveal
+
       org-bullets
       org-pomodoro
+      ox-reveal
+
       pdf-tools
-      python-mode
       popwin
       pos-tip
       projectile
+      python-mode
       rainbow-delimiters
       restart-emacs
-      spotify
-      smex
-      smartparens
+
       slime
       slime-company
-      syslog-mode
+
+      smartparens
+      smex
       spaceline
+      spotify
+      syslog-mode
       undo-tree
       wc-mode
       web-mode
-      wttrin
       which-key
+      wttrin
       yaml-mode
       yasnippet  
 
@@ -120,7 +125,7 @@
 #+BEGIN_SRC emacs-lisp
   ;; disable emacs startup screen & message
   (setq inhibit-startup-screen  t
-        inhibit-startup-message t)
+	inhibit-startup-message t)
 
   (setq initial-scratch-message nil) ;; force *scratch* buffer to start blank
 
@@ -134,10 +139,10 @@
 
   ;; font
   (set-face-attribute 'default nil
-                      :family "DejaVu Sans Mono"
-                      :height 120
-                      :weight 'normal
-                      :width 'normal)
+		      :family "DejaVu Sans Mono"
+		      :height 120
+		      :weight 'normal
+		      :width 'normal)
 
   (load-theme 'sanityinc-tomorrow-eighties t) ;; set theme
 
@@ -191,7 +196,7 @@
   (defun font-lock-comment-annotations ()
     (font-lock-add-keywords
      nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|OPTIMIZE\\|HACK\\|REFACTOR\\):"
-            1 font-lock-warning-face t))))
+	    1 font-lock-warning-face t))))
 
   (add-hook 'prog-mode-hook 'font-lock-comment-annotations)
 
@@ -200,7 +205,7 @@
 
   ;; set default compilation command
   ;;(setq compile-command "make -C ~/Desktop/projet-c/")
-  (setq compile-command "gcc *.c -o programme")
+  (setq compile-command "clang *.c -o programme")
 
   ;; set default environment for gdb interface
   (setq
@@ -223,15 +228,22 @@
 
   (setq savehist-file "~/.emacs.d/savehist")
   (setq savehist-additional-variables
-        '(buffer-name-history
-          compile-command
-          extended-command-history
-          file-name-history
-          kill-ring
-          regexp-search-ring
-          search-ring))
+	'(buffer-name-history
+	  compile-command
+	  extended-command-history
+	  file-name-history
+	  kill-ring
+	  regexp-search-ring
+	  search-ring))
 
   (savehist-mode 1) ;; enable persistent history
+#+END_SRC
+* Elisp
+Load external elisp files :
+#+BEGIN_SRC emacs-lisp
+  (load-file "~/.emacs.d/elisp/QuickC.el")
+  (load-file "~/.emacs.d/elisp/PackageRefreshAndInstall.el")
+  (load-file "~/.emacs.d/elisp/ImproveCompilation.el")
 #+END_SRC
 * Packages
 ** ace-jump-mode
@@ -383,7 +395,7 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 
   (setq european-calendar-style t) ;; Set date format "dd/mm/yy" in general and for org-mode
 
-  (setq calendar-week-start-day 1) ;; Week start with Monday
+  (setq calendar-week-start-day 1) ;; Week starts Monday
 
   ;; In order to export latex with syntaxical coloration for code blocks, minted (latex package)
   ;; and Pygments (python syntax highlighter) need to be installed. (for pygments : pip install Pygments)
@@ -690,12 +702,6 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
   (setq erc-kill-server-buffer-on-quit t)
 
   (global-set-key (kbd "C-c e") 'erc)
-#+END_SRC
-* Elisp
-Load external elisp files :
-#+BEGIN_SRC emacs-lisp
-  (load-file "~/.emacs.d/elisp/QuickC.el")
-  (load-file "~/.emacs.d/elisp/PackageRefreshAndInstall.el")
 #+END_SRC
 
 * Global shortcuts
