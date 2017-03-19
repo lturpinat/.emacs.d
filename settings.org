@@ -23,8 +23,8 @@
 
   (defvar packages
     '(
-      ace-jump-mode
       anzu
+      avy
       beacon
       bm
       bug-hunter
@@ -80,12 +80,14 @@
       popwin
       pos-tip
       projectile
+      plsql
       python-mode
       rainbow-delimiters
       restart-emacs
 
       slime
       slime-company
+      sqlplus
 
       smartparens
       smex
@@ -246,10 +248,10 @@ Load external elisp files :
   (load-file "~/.emacs.d/elisp/ImproveCompilation.el")
 #+END_SRC
 * Packages
-** ace-jump-mode
+** avy
 #+BEGIN_SRC emacs-lisp
-(require 'ace-jump-mode)
-(global-set-key (kbd "C-c a") 'ace-jump-mode)
+  (require 'avy)
+  (global-set-key (kbd "C-c a") 'avy-goto-char-2)
 #+END_SRC
 ** helm
 *** basics
@@ -704,6 +706,20 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
   (global-set-key (kbd "C-c e") 'erc)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (require 'mmm-mode)
+  (set-face-background 'mmm-default-submode-face nil)
+  (mmm-add-classes
+   '((embedded-sql
+      :submode sql-mode
+      :front "EXEC SQL"
+      :back ";")))
+  (setq-default mmm-global-mode t)
+  (mmm-add-mode-ext-class 'c-mode "\.pc$" 'embedded-sql)
+  (mmm-add-mode-ext-class 'c-mode "\.sqc$" 'embedded-sql)
+  (setq-default mmm-never-modes
+		(append '(ediff-mode) '(text-mode) mmm-never-modes))
+#+END_SRC
 * Global shortcuts
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c m c") 'set-rectangular-region-anchor) ;; Create a rectangular region (multiple-cursors)
