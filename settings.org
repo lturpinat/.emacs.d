@@ -240,6 +240,18 @@
 
   (savehist-mode 1) ;; enable persistent history
 #+END_SRC
+** Programming Langages
+*** Java
+#+BEGIN_SRC emacs-lisp
+  ;; set correct indenation when breaking arguments
+  (defun java-indentation-breaking-arguments ()
+    (c-set-offset 'arglist-intro '+))
+  (add-hook 'java-mode-hook 'java-indentation-breaking-arguments)
+
+  ;; Indentation de 4 tab
+  (add-hook 'java-mode-hook (lambda ()
+                              (setq c-basic-offset 4)))
+#+END_SRC
 * Elisp
 Load external elisp files :
 #+BEGIN_SRC emacs-lisp
@@ -687,8 +699,8 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 
   ;; disable tracking for those events (JOIN, NICK, PART...)
   (setq erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
-                                  
-                                  "324" "329" "332" "333" "353" "477")) ;; numeric list (@http://mathieu-lemoine.developpez.com/tutoriels/irc/protocole/?page=reponses)
+
+				  "324" "329" "332" "333" "353" "477")) ;; numeric list (@http://mathieu-lemoine.developpez.com/tutoriels/irc/protocole/?page=reponses)
 
   ;; hide those kind of informations in order to prevent notification "spamming"
   (setq erc-hide-list '("JOIN" "PART" "QUIT" "NICK"))
@@ -703,23 +715,13 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
   ;; Kill buffers for server messages after quitting the server
   (setq erc-kill-server-buffer-on-quit t)
 
+  ;; Enable the notification module
+  (add-to-list 'erc-modules 'notifications)
+
+
   (global-set-key (kbd "C-c e") 'erc)
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-  (require 'mmm-mode)
-  (set-face-background 'mmm-default-submode-face nil)
-  (mmm-add-classes
-   '((embedded-sql
-      :submode sql-mode
-      :front "EXEC SQL"
-      :back ";")))
-  (setq-default mmm-global-mode t)
-  (mmm-add-mode-ext-class 'c-mode "\.pc$" 'embedded-sql)
-  (mmm-add-mode-ext-class 'c-mode "\.sqc$" 'embedded-sql)
-  (setq-default mmm-never-modes
-		(append '(ediff-mode) '(text-mode) mmm-never-modes))
-#+END_SRC
 * Global shortcuts
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c m c") 'set-rectangular-region-anchor) ;; Create a rectangular region (multiple-cursors)
