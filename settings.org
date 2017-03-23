@@ -24,6 +24,7 @@
   (defvar packages
     '(
       anzu
+      arduino-mode
       avy
       beacon
       bm
