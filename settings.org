@@ -682,7 +682,7 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 #+BEGIN_SRC emacs-lisp
 (require 'javadoc-lookup)
 ;; define local javadoc directory
-(javadoc-add-roots "/usr/share/doc/java8-openjdk/api/")
+(javadoc-add-roots "/usr/share/doc/java9-openjdk/api/")
 
 (global-set-key (kbd "C-c j") 'javadoc-lookup)
 (global-set-key (kbd "C-c i") 'javadoc-add-import)
