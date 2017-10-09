@@ -760,6 +760,9 @@ Some of the following code came from [[https://github.com/compunaut/helm-ido-lik
 ;; read-only mode
 (global-set-key (kbd "C-x C-g") 'read-only-mode)
 
+;; disable old read-only mode shortcut
+(global-set-key (kbd "C-x C-q") nil)
+
 ;; start compilation without re-asking compilation command
 (global-set-key (kbd "<f5>") (lambda ()
                                (interactive)
