@@ -16,6 +16,7 @@
 
 ;; Languages Specific Settings file
 (load-file "~/.emacs.d/elisp/languages/CConfiguration.el")
+(load-file "~/.emacs.d/elisp/languages/quack.el")
 
 ;; Plugins Configuration file
 (load-file "~/.emacs.d/elisp/plugins/Ivy.el")
@@ -27,6 +28,7 @@
 (load-file "~/.emacs.d/elisp/plugins/Latex-Preview-Pane.el")
 (load-file "~/.emacs.d/elisp/plugins/Browse-Kill-Ring.el")
 (load-file "~/.emacs.d/elisp/plugins/Markdown.el")
+(load-file  "~/.emacs.d/elisp/plugins/Scheme.el") ;; depends on quack.el
 
 ;; Load small scripts
 (load-file "~/.emacs.d/elisp/scripts/QuickC.el")
@@ -38,3 +40,17 @@
 
 ;; Down there emacs custom-set-variables...
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (flycheck markdown-mode browse-kill-ring latex-preview-pane auto-complete-auctex better-defaults rainbow-delimiters undo-tree counsel color-theme-sanityinc-tomorrow))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
