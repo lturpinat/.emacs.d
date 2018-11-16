@@ -5,7 +5,7 @@
 
 * Design choices
 
-I formerly chose to use org files to gather my configuration settings in one file. As it brought
+I formerly choosed toto use org files to gather my configuration settings in one file. As it brought
 nice form to the whole configuration, it felt more and more harder to debug it, while adding adding some delay on initialisation.
 As a consequence, I decided to break it apart, and start anew with the old-fashioned way : splitting everything into folders and files. It does feel a little bit heavier, but it is truly efficient when it comes to loading and debugging (especially that one).
 
