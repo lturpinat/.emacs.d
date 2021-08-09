@@ -44,7 +44,7 @@ The *init.el* basically only loads the other configuration files. I could have u
 
 ** BasicSettings.el
 
-This file contains global settings that I want to apply on all my Emacs configuration. It tends not to rely on some technologies or plugins (except their name so that the package manager download them).
+This file contains global settings that I want to apply on all my Emacs configuration. It tends not to rely on any technology or plugin (except their name so that the package manager download them).
 
 ** GlobalShortcuts.el
 
